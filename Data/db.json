@@ -1,0 +1,6 @@
+{
+  "posts": [
+    {"id": 1, "title": "Bài viết đầu tiên", "content": "Nội dung bài viết 1"},
+    {"id": 2, "title": "Bài viết thứ hai", "content": "Nội dung bài viết 2"}
+  ]
+}
