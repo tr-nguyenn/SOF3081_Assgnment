@@ -1,19 +1,25 @@
-<script setup lang="ts">
-import Footer from "./components/Footer.vue";
+<script setup>
+import {useRoute} from "vue-router";
 import Navbar from "./components/Navbar.vue";
-import LoginModal from "./views/LoginModal.vue";
-import RegisterModal from "./views/RegisterModal.vue";
+import Footer from "./components/Footer.vue";
+
+const route = useRoute();
 </script>
 
 <template>
-  <Navbar />
-  <RegisterModal />
-  <LoginModal />
-  <div class="main-content py-3" style="margin-top: 70px">
-    <div class="container">
-      <RouterView />
+  <!-- DEFAULT LAYOUT -->
+  <template v-if="route.meta.layout !== 'auth'">
+    <Navbar />
+    <div class="main-content py-3" style="margin-top: 70px">
+      <div class="container">
+        <RouterView />
+      </div>
     </div>
-  </div>
+    <Footer />
+  </template>
 
-  <Footer />
+  <!-- AUTH LAYOUT -->
+  <template v-else>
+    <RouterView />
+  </template>
 </template>

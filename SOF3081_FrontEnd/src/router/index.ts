@@ -14,6 +14,18 @@ const router = createRouter({
       name: "post-detail",
       component: () => import("../views/PostDetail.vue"),
     },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("../views/Login.vue"),
+      meta: {layout: "auth"},
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("../views/Register.vue"),
+      meta: {layout: "auth"},
+    },
   ],
 });
 

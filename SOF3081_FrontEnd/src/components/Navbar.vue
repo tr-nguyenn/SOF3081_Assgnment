@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top py-3">
     <div class="container">
       <a class="navbar-brand fw-bold" href="#">Blog</a>
       <button
@@ -23,20 +23,8 @@
           </li>
         </ul>
         <div class="d-flex align-items-center gap-2">
-          <button
-            class="btn btn-outline-light btn-sm px-3 rounded-pill"
-            data-bs-toggle="modal"
-            data-bs-target="#loginModal"
-          >
-            Đăng nhập
-          </button>
-          <button
-            class="btn btn-warning btn-sm px-3 rounded-pill fw-semibold"
-            data-bs-toggle="modal"
-            data-bs-target="#registerModal"
-          >
-            Đăng ký
-          </button>
+          <RouterLink class="btn btn-outline-light btn-sm px-3 rounded-pill" to="login">Đăng nhập</RouterLink>
+          <RouterLink class="btn btn-warning btn-sm px-3 rounded-pill fw-semibold" to="register"> Đăng ký </RouterLink>
         </div>
       </div>
     </div>
