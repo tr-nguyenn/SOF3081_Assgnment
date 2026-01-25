@@ -21,6 +21,9 @@
           <li class="nav-item">
             <RouterLink class="nav-link" to="post/1">Bài viết</RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" to="dashboard">Trang tổng quan</RouterLink>
+          </li>
         </ul>
         <div class="d-flex align-items-center gap-2 me-2">
           <RouterLink class="btn btn-outline-light btn-sm px-3 rounded-2" to="login">Đăng nhập</RouterLink>
