@@ -11,7 +11,7 @@
         "
       >
         <div>
-          <RouterLink to="/" class="fw-bold h5">📘 BlogManager</RouterLink>
+          <h6 to="/" class="fw-bold h5">📘 BlogManager</h6>
         </div>
 
         <div>
@@ -36,7 +36,6 @@
           </RouterLink>
           <h2 class="fw-bold mb-2">Tham gia cộng đồng</h2>
           <p class="text-secondary mb-4">Nhập thông tin bên dưới để tạo tài khoản miễn phí.</p>
-
           <form>
             <div class="mb-3">
               <label class="form-label fw-bold">Họ và tên</label>

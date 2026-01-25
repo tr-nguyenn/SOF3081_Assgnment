@@ -22,10 +22,17 @@
             <RouterLink class="nav-link" to="post/1">Bài viết</RouterLink>
           </li>
         </ul>
-        <div class="d-flex align-items-center gap-2">
-          <RouterLink class="btn btn-outline-light btn-sm px-3 rounded-pill" to="login">Đăng nhập</RouterLink>
-          <RouterLink class="btn btn-warning btn-sm px-3 rounded-pill fw-semibold" to="register"> Đăng ký </RouterLink>
+        <div class="d-flex align-items-center gap-2 me-2">
+          <RouterLink class="btn btn-outline-light btn-sm px-3 rounded-2" to="login">Đăng nhập</RouterLink>
+          <RouterLink class="btn btn-warning btn-sm px-3 rounded-2 fw-semibold" to="register"> Đăng ký </RouterLink>
         </div>
+        <!-- form search -->
+        <form class="d-flex mt-lg-0 mt-2" role="search">
+          <div class="input-group">
+            <input type="search" class="form-control form-control-sm" placeholder="Nội dung tìm kiếm..." />
+            <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-search"></i></button>
+          </div>
+        </form>
       </div>
     </div>
   </nav>
