@@ -9,7 +9,7 @@
             <h1 class="display-3 fw-bold mb-4 animate-fade-in">Chia sẻ câu chuyện của bạn</h1>
             <p class="lead mb-5 fs-4">Nơi hàng triệu người viết, đọc và chia sẻ những câu chuyện đáng nhớ</p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
-              <router-link to="/register" class="btn btn-light btn-lg px-5 rounded-pill shadow">
+              <router-link to="/profile" class="btn btn-light btn-lg px-5 rounded-pill shadow">
                 <i class="bi bi-rocket-takeoff me-2"></i>Bắt đầu viết
               </router-link>
               <router-link to="/login" class="btn btn-outline-light btn-lg px-5 rounded-pill">

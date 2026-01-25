@@ -110,7 +110,7 @@
   </footer>
 
   <!-- Copyright -->
-  <div class="bg-black text-bg-dark py-4 small">
+  <div class="text-bg-dark bg-primary py-4 small border-top">
     <div class="container">
       <div class="row text-center">
         <p class="m-0 small">© 2026 – Nguyễn Trung Nguyên. All rights reserved.</p>
