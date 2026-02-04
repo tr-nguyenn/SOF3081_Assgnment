@@ -36,25 +36,34 @@
           </RouterLink>
           <h2 class="fw-bold mb-2">Tham gia cộng đồng</h2>
           <p class="text-secondary mb-4">Nhập thông tin bên dưới để tạo tài khoản miễn phí.</p>
-          <form>
+
+          <form @submit.prevent="handleRegister">
             <div class="mb-3">
               <label class="form-label fw-bold">Họ và tên</label>
-              <input type="text" class="form-control bg-dark text-white border-secondary py-2" />
+              <input v-model="user.name" type="text" class="form-control bg-dark text-white border-secondary py-2" />
             </div>
 
             <div class="mb-3">
               <label class="form-label fw-bold">Email</label>
-              <input type="email" class="form-control bg-dark text-white border-secondary py-2" />
+              <input v-model="user.email" type="email" class="form-control bg-dark text-white border-secondary py-2" />
             </div>
 
             <div class="mb-4">
               <label class="form-label fw-bold">Mật khẩu</label>
-              <input type="password" class="form-control bg-dark text-white border-secondary py-2" />
+              <input
+                v-model="user.password"
+                type="password"
+                class="form-control bg-dark text-white border-secondary py-2"
+              />
             </div>
 
             <div class="mb-4">
               <label class="form-label fw-bold">Xác nhận mật khẩu</label>
-              <input type="password" class="form-control bg-dark text-white border-secondary py-2" />
+              <input
+                v-model="confirmPassword"
+                type="password"
+                class="form-control bg-dark text-white border-secondary py-2"
+              />
             </div>
 
             <button type="submit" class="btn btn-primary w-100 py-2">Đăng ký</button>
@@ -69,3 +78,34 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import {IUser} from "@/types/User";
+import axios from "axios";
+import {reactive, ref} from "vue";
+
+const confirmPassword = ref("");
+const user = reactive<IUser>({
+  id: 0,
+  name: "",
+  email: "",
+  password: "",
+  avatar: "",
+});
+const handleRegister = async () => {
+  if (user.password != confirmPassword.value) {
+    alert("Mật khẩu xác nhận không khớp");
+    return;
+  }
+
+  try {
+    const response = await axios.post("http://localhost:2007/users", {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+</script>

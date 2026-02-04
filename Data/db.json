@@ -1,6 +1,58 @@
 {
   "posts": [
-    {"id": 1, "title": "Bài viết đầu tiên", "content": "Nội dung bài viết 1"},
-    {"id": 2, "title": "Bài viết thứ hai", "content": "Nội dung bài viết 2"}
+    {
+      "id": 1,
+      "title": "Bài viết đầu tiên",
+      "content": "Nội dung bài viết 1"
+    },
+    {
+      "id": 2,
+      "title": "Bài viết thứ hai",
+      "content": "Nội dung bài viết 2"
+    }
+  ],
+  "users": [
+    {
+      "id": "d161",
+      "name": "afe",
+      "email": "nguyennttd01427@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "c94b",
+      "name": "afe",
+      "email": "nguyennttd01427@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "beef",
+      "name": "afe",
+      "email": "nguyennttd01427@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "f0d8",
+      "name": "afe",
+      "email": "nguyennttd01427@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "feb2",
+      "name": "afe",
+      "email": "nguyennttd01427@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "f78b",
+      "name": "afe",
+      "email": "nguyennttd01427@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "26f7",
+      "name": "afe",
+      "email": "nguyennttd01427@gmail.com",
+      "password": "123"
+    }
   ]
 }
