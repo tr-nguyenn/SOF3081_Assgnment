@@ -16,7 +16,7 @@
       <div class="mb-3">
         <label class="form-label text-black">Nội dung:</label>
         <textarea v-model="content" rows="3" type="text" class="form-control" :class="{ 'is-invalid': contentError }"></textarea>
-        <div class="invalid-feedback">Vui lòng nhập nội dung</div>
+        <div class="invalid-feedback">Vui lòng nhập nội dung.</div>
       </div>
       <p>
         Mode hiện tại:
@@ -59,6 +59,9 @@ const handleSubmitForm = () => {
       content: content.value,
     });
   }
+
+  title.value = "";
+  content.value = "";
 };
 
 const open = () => baseModalRef.value?.open();

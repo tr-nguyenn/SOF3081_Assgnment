@@ -13,7 +13,7 @@
             <h1 class="h3 mb-0 fw-bold text-dark">Quản lý bài viết</h1>
           </div>
           <div class="col-md-6 text-md-end mt-3 mt-md-0">
-            <button class="btn btn-primary btn-add-post" @click="openCreate" data-bs-toggle="modal" data-bs-target="#modalCreatePost">
+            <button class="btn btn-primary btn-add-post" @click="openCreate">
               <i class="bi bi-plus-circle me-2"></i>
               Thêm bài viết
             </button>
