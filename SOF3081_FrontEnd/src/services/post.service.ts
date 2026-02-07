@@ -1,4 +1,4 @@
-import axiosClient from "@/api/axiosClinet";
+import axiosClient from "@/api/axiosClient";
 import type { IPost } from "@/types/Post";
 
 class PostService {

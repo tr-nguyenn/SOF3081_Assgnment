@@ -7,7 +7,10 @@
       <button type="button" class="btn-close" @click="close"></button>
     </div>
     <div class="modal-body">
-      <p>Form nhập liệu ở đây...</p>
+      <div class="mb-3">
+        <label class="form-label">Tiêu đề:</label>
+        <input type="text" class="" />
+      </div>
       <p>
         Mode hiện tại:
         <strong>{{ mode }}</strong>
