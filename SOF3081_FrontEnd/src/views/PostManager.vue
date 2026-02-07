@@ -55,7 +55,7 @@
   </div>
 
   <!-- Modal -->
-  <PostModal ref="modalRef" :mode="mode" />
+  <PostModal ref="modalRef" :mode="mode" @create-post="handleCreatePost" />
 </template>
 
 <script setup lang="ts">
@@ -63,12 +63,14 @@ import { onMounted, ref } from "vue";
 import PostModal from "@/components/post/PostModal.vue";
 import type { IPost } from "@/types/Post";
 import postService from "@/services/post.service";
+import { useToast } from "vue-toastification";
 
 const modalRef = ref<InstanceType<typeof PostModal> | null>(null);
 const mode = ref<"create" | "update">("create");
 const posts = ref<IPost[]>([]);
 const errorMessage = ref("");
-
+const toast = useToast();
+//get all post
 const fetchPost = async () => {
   try {
     const response = await postService.getAll();
@@ -79,9 +81,21 @@ const fetchPost = async () => {
 };
 onMounted(fetchPost);
 
+//Create post
 const openCreate = () => {
   mode.value = "create";
   modalRef.value?.open();
+};
+
+const handleCreatePost = async (data: IPost) => {
+  try {
+    await postService.create(data);
+    await fetchPost();
+    modalRef.value?.close();
+    toast.success("Tạo bài viết thành công!");
+  } catch (error: any) {
+    toast.error(error?.message || "Có lỗi xảy ra khi tạo bài viết");
+  }
 };
 
 const openUpdate = () => {
