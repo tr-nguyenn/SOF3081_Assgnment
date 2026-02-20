@@ -1,5 +1,11 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "id": "848f",
+      "title": "Tiêu đề 1",
+      "content": "ầefaeafe"
+    }
+  ],
   "users": [
     {
       "id": "d161",

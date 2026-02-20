@@ -18,10 +18,10 @@
         <textarea v-model="content" rows="3" type="text" class="form-control" :class="{ 'is-invalid': contentError }"></textarea>
         <div class="invalid-feedback">Vui lòng nhập nội dung.</div>
       </div>
-      <p>
-        Mode hiện tại:
-        <strong>{{ mode }}</strong>
-      </p>
+      <div class="mb-3">
+        <label class="form-label text-black">Ảnh bài viết:</label>
+        <input type="file" class="form-control" accept="image/jpeg,image/png" />
+      </div>
     </div>
 
     <div class="modal-footer">
