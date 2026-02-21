@@ -9,19 +9,15 @@
       <div class="col-lg-4">
         <div class="sidebar-card px-4 py-5 d-flex align-items-center text-white flex-column rounded-4 sticky-lg-top">
           <div class="avatar-container mb-4">
-            <img
-              class="avatar-img rounded-pill"
-              src="https://ui-avatars.com/api/?name=T+N&background=random"
-              alt="Avatar"
-            />
+            <img class="avatar-img rounded-pill" src="https://ui-avatars.com/api/?name=T+N&background=random" alt="Avatar" />
           </div>
           <h4 class="fw-bold mb-1">Nguyễn Trung Nguyên</h4>
-          <p class="opacity-75 mb-4">Biên tập viên nội dung cấp cao</p>
+          <p class="opacity-75 mb-4">{{ user?.role }}</p>
 
           <div class="w-100 border-top border-white border-opacity-25 pt-4">
             <div class="d-flex justify-content-between small mb-2">
-              <span>Bài viết:</span>
-              <span class="fw-bold">24</span>
+              <span>Tổng bài viết:</span>
+              <span class="fw-bold">{{ totalPosts }}</span>
             </div>
             <div class="d-flex justify-content-between small">
               <span>Tham gia từ:</span>
@@ -31,20 +27,21 @@
         </div>
       </div>
 
-      <div class="col-lg-8">
-        <form action="">
+      <div class="col-lg-7">
+        <form v-if="user">
           <div class="card card-custom mb-4">
-            <div class="card-header fs-5"><i class="bi bi-person-circle me-2"></i>Thông tin cá nhân</div>
+            <div class="card-header fs-5">
+              <i class="bi bi-person-circle me-2"></i>
+              Thông tin cá nhân
+            </div>
             <div class="card-body p-4">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Họ và tên</label>
-                  <input type="text" class="form-control" value="Nguyễn Trung Nguyên" />
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Chức danh</label>
-                  <input type="text" class="form-control" value="Biên tập viên nội dung cấp cao" />
-                </div>
+              <div class="mb-3">
+                <label class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" v-model="user.name" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Phân quyền:</label>
+                <input type="text" class="form-control" v-model="user.role" />
               </div>
 
               <div class="mb-3">
@@ -53,13 +50,8 @@
                   <span class="input-group-text bg-light border-end-0 text-muted">
                     <i class="bi bi-envelope"></i>
                   </span>
-                  <input type="email" class="form-control border-start-0" value="nguyennttd01427@gmail.com" />
+                  <input type="email" class="form-control border-start-0" v-model="user.email" />
                 </div>
-              </div>
-
-              <div class="mb-3">
-                <label for="tieuSu" class="form-label">Tiểu sử ngắn</label>
-                <textarea class="form-control" rows="4" placeholder="Viết vài dòng giới thiệu bản thân..."></textarea>
               </div>
             </div>
           </div>
@@ -73,6 +65,33 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import postService from "@/services/post.service";
+import type { IPost } from "@/types/Post";
+import type { IUser } from "@/types/User";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const user = ref<IUser | null>(null);
+const totalPosts = ref<number | undefined>(undefined);
+const router = useRouter();
+
+onMounted(async () => {
+  const userString = localStorage.getItem("user");
+  if (!userString) return router.replace("/login");
+  const currentUser = JSON.parse(userString) as IUser;
+  user.value = currentUser;
+
+  totalPosts.value = await fetchTotalPost();
+});
+
+const fetchTotalPost = async () => {
+  if (!user.value?.id) return;
+  const listPost: IPost[] = await postService.getAllPostByUser(user.value?.id);
+  return listPost.length;
+};
+</script>
 
 <style>
 :root {

@@ -2,52 +2,30 @@
   "posts": [
     {
       "id": "848f",
-      "title": "Tiêu đề 1",
-      "content": "ầefaeafe"
+      "title": "Tiêu đề 1ee",
+      "content": "ầefaeafeeeeeeeeee vv"
+    },
+    {
+      "id": "4246",
+      "title": "gg",
+      "content": "gg",
+      "image": "",
+      "userId": "d161"
     }
   ],
   "users": [
     {
       "id": "d161",
-      "name": "afe",
-      "email": "nguyennttd01427@gmail.com",
+      "name": "Test 1",
+      "email": "test1@gmail.com",
       "password": "123"
     },
     {
-      "id": "c94b",
-      "name": "afe",
+      "id": "d161",
+      "name": "Nguyễn Trung Nguyên",
       "email": "nguyennttd01427@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": "beef",
-      "name": "afe",
-      "email": "nguyennttd01427@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": "f0d8",
-      "name": "afe",
-      "email": "nguyennttd01427@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": "feb2",
-      "name": "afe",
-      "email": "nguyennttd01427@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": "f78b",
-      "name": "afe",
-      "email": "nguyennttd01427@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": "26f7",
-      "name": "afe",
-      "email": "nguyennttd01427@gmail.com",
-      "password": "123"
+      "password": "123",
+      "role": "admin"
     }
   ]
 }

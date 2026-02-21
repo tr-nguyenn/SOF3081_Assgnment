@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- Hero Section -->
-    <section class="hero-section bg-primary">
+    <section class="hero-section bg-primary m-3">
       <div class="hero-overlay"></div>
       <div class="container position-relative">
         <div class="row align-items-center min-vh-50">
@@ -9,7 +9,7 @@
             <h1 class="display-3 fw-bold mb-4 animate-fade-in fs-1 pt-4">Chia sẻ câu chuyện của bạn</h1>
             <p class="lead mb-5 fs-4">Nơi hàng triệu người viết, đọc và chia sẻ những câu chuyện đáng nhớ</p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
-              <router-link to="/profile" class="btn btn-light btn-lg px-5 rounded-pill shadow">
+              <router-link to="/post-manager" class="btn btn-light btn-lg px-5 rounded-pill shadow">
                 <i class="bi bi-rocket-takeoff me-2"></i>
                 Bắt đầu viết
               </router-link>
@@ -315,24 +315,6 @@
                     <i class="bi bi-arrow-right ms-1"></i>
                   </a>
                 </div>
-              </div>
-            </div>
-
-            <!-- Newsletter Subscribe -->
-            <div class="card border-0 shadow-sm rounded-4 mb-4 bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
-              <div class="card-body p-4 text-white text-center">
-                <div class="mb-3">
-                  <i class="bi bi-envelope-heart display-4"></i>
-                </div>
-                <h5 class="card-title fw-bold mb-2">Đăng ký nhận bản tin</h5>
-                <p class="mb-4" style="font-size: 0.9rem">Nhận những bài viết mới nhất và xu hướng hot nhất mỗi tuần</p>
-                <div class="mb-3">
-                  <input type="email" class="form-control form-control-lg rounded-pill border-0" placeholder="Email của bạn" />
-                </div>
-                <button class="btn btn-light btn-lg w-100 rounded-pill fw-semibold">
-                  <i class="bi bi-send me-2"></i>
-                  Đăng
-                </button>
               </div>
             </div>
           </div>

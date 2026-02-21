@@ -18,15 +18,19 @@
         <textarea v-model="content" rows="3" type="text" class="form-control" :class="{ 'is-invalid': contentError }"></textarea>
         <div class="invalid-feedback">Vui lòng nhập nội dung.</div>
       </div>
+
       <div class="mb-3">
         <label class="form-label text-black">Ảnh bài viết:</label>
         <input type="file" class="form-control" accept="image/jpeg,image/png" />
+        <img class="img-thumbnail mt-2" style="max-height: 150px" />
       </div>
     </div>
 
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" @click="close">Hủy</button>
-      <button type="button" class="btn btn-primary" @click="handleSubmitForm">{{ mode === "create" ? "Tạo bài viết" : "Cập nhật bài viết" }}</button>
+      <button type="button" class="btn btn-primary" @click="handleSubmitForm">
+        {{ mode === "create" ? "Tạo bài viết" : "Lưu thay đổi" }}
+      </button>
     </div>
   </BaseModal>
 </template>
@@ -34,38 +38,77 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BaseModal from "@/components/common/BaseModal.vue";
+import type { IPost } from "@/types/Post";
 
 const props = defineProps<{
   mode: "create" | "update";
 }>();
 
+// 1. Khai báo Emit cho cả Create và Update
+const emit = defineEmits(["create-post", "update-post"]);
+
 const baseModalRef = ref<InstanceType<typeof BaseModal> | null>(null);
+
+// 2. State quản lý form
+const postId = ref(""); // Rất quan trọng: cần lưu ID để biết đang sửa bài nào
 const title = ref("");
 const content = ref("");
 const titleError = ref(false);
 const contentError = ref(false);
-const emitCreate = defineEmits(["create-post"]);
+
+// 3. Hàm nhận dữ liệu từ PostManager truyền vào khi bấm "Sửa"
+const setFormData = (post: IPost) => {
+  postId.value = post.id;
+  title.value = post.title;
+  content.value = post.content;
+  // Reset lỗi nếu có
+  titleError.value = false;
+  contentError.value = false;
+};
+
+// 4. Hàm reset form về trống (Dùng khi tạo mới hoặc đóng Modal)
+const resetForm = () => {
+  postId.value = "";
+  title.value = "";
+  content.value = "";
+  titleError.value = false;
+  contentError.value = false;
+};
 
 const handleSubmitForm = () => {
-  //Check input
-  titleError.value = !title.value;
-  contentError.value = !content.value;
+  // Validate input
+  titleError.value = !title.value.trim();
+  contentError.value = !content.value.trim();
   if (titleError.value || contentError.value) return;
 
-  //create
+  // Xử lý Gửi Form
   if (props.mode === "create") {
-    emitCreate("create-post", {
+    emit("create-post", {
+      title: title.value,
+      content: content.value,
+    });
+  } else if (props.mode === "update") {
+    emit("update-post", {
+      id: postId.value, // Trả về kèm ID để gọi API update
       title: title.value,
       content: content.value,
     });
   }
-
-  title.value = "";
-  content.value = "";
 };
 
-const open = () => baseModalRef.value?.open();
-const close = () => baseModalRef.value?.close();
+const open = () => {
+  // Nếu mở lên để tạo mới thì xóa trắng form cũ
+  if (props.mode === "create") {
+    resetForm();
+  }
+  baseModalRef.value?.open();
+};
 
-defineExpose({ open, close });
+const close = () => {
+  baseModalRef.value?.close();
+  resetForm(); // Đóng xong thì clear form
+};
+
+// 5. Expose hàm setFormData ra ngoài để component cha (PostManager) có thể gọi
+defineExpose({ open, close, setFormData });
 </script>

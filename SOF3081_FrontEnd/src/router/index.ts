@@ -11,7 +11,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: "/", name: "Home", component: Home },
-    { path: "/PostManager", name: "PostManager", component: PostManager },
+    {
+      path: "/post-manager",
+      name: "PostManager",
+      component: PostManager,
+      meta: { requiresAuth: true },
+    },
     {
       path: "/post/:id",
       name: "post-detail",
@@ -40,6 +45,18 @@ const router = createRouter({
       component: () => Dashboard,
     },
   ],
+});
+
+// Chặn điều hướng nếu chưa đăng nhập
+router.beforeEach((to, form, next) => {
+  const loggedInUser = localStorage.getItem("user");
+
+  if (to.meta.requiresAuth && !loggedInUser) {
+    alert("cc");
+    next("/login");
+  } else {
+    next();
+  }
 });
 
 export default router;
