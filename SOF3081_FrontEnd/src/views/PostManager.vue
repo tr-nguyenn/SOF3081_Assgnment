@@ -83,7 +83,7 @@ const handleCreatePost = async (data: IPost) => {
     const postData = { ...data, userId: currentUser.value?.id };
 
     await postService.create(postData);
-    await fetchPosts(); // Gọi lại hàm lấy dữ liệu (đã được định nghĩa)
+    await fetchPosts();
     modalRef.value?.close();
     toast.success("Tạo bài viết thành công!");
   } catch (error: any) {

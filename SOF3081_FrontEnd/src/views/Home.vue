@@ -91,7 +91,7 @@
                     <div class="d-flex align-items-center mb-3">
                       <img src="https://i.pravatar.cc/150?img=33" class="rounded-circle me-2" width="32" height="32" alt="Avatar" />
                       <div class="me-auto">
-                        <div class="fw-semibold small">Trần Thị B</div>
+                        <div class="fw-semibold small">{{ post.user?.name }}</div>
                         <div class="text-muted" style="font-size: 0.75rem">2 ngày trước</div>
                       </div>
                       <div class="dropdown">
@@ -121,27 +121,10 @@
                         </ul>
                       </div>
                     </div>
-
                     <h3 class="card-title h5 fw-bold mb-2 lh-base">
-                      <a href="#" class="text-decoration-none text-dark stretched-link">{{ post.title }}</a>
+                      <router-link :to="'post/' + post.id" class="text-decoration-none text-dark stretched-link">{{ post.title }}</router-link>
                     </h3>
-
-                    <p class="card-text text-muted mb-3" style="font-size: 0.9rem">{{ post.title }}</p>
-
-                    <div class="d-flex align-items-center gap-3 text-muted small">
-                      <span>
-                        <i class="bi bi-heart me-1"></i>
-                        234
-                      </span>
-                      <span>
-                        <i class="bi bi-chat-dots me-1"></i>
-                        45
-                      </span>
-                      <span>
-                        <i class="bi bi-eye me-1"></i>
-                        1.2k
-                      </span>
-                    </div>
+                    <p class="card-text card-text-clamp text-muted mb-3" style="font-size: 0.9rem">{{ post.content }}</p>
                   </div>
                 </div>
               </div>
@@ -287,6 +270,7 @@ import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
 import type { IPost } from "@/types/Post";
 import postService from "@/services/post.service";
+import { RouterLink } from "vue-router";
 
 const toast = useToast();
 const page = ref(1);
@@ -299,12 +283,9 @@ const fetchPost = async () => {
     const res = await postService.getAllPostPagination(page.value, limit);
     posts.value = res.data;
     totalPages.value = Math.ceil(res.total / limit);
-    console.log(totalPages.value);
   } catch (error: any) {
     toast.error(error.message || "Có lỗi xảy ra tải dữ liệu");
   }
-
-  console.log(totalPages);
 };
 
 const changePage = (newPage: number) => {
@@ -318,3 +299,17 @@ onMounted(() => {
   fetchPost();
 });
 </script>
+
+<style scoped>
+.card-text-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  line-height: 1.6;
+  max-height: calc(1.6em * 3);
+}
+</style>

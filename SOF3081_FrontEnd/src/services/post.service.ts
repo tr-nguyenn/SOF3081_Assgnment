@@ -5,17 +5,28 @@ const postService = {
   // Lấy tất cả bài viết có phân trang
   getAllPostPagination: async (page: number = 1, limit: number = 5) => {
     const url = "/posts";
-
     const response = await axiosClient.get(url, {
       params: {
         _page: page,
-        _per_page: limit,
+        _limit: limit,
+        _expand: "user",
       },
     });
+
     return {
-      data: response.data.data,
-      total: response.data.items,
+      data: response.data,
+      total: parseInt(response.headers["x-total-count"] || "0", 10),
     };
+  },
+
+  //Lấy ra chi tiết bài viết theo id bài viết
+  getPostById: async (id: string) => {
+    const response = await axiosClient.get<IPost>(`/posts/${id}`, {
+      params: {
+        _expand: "user",
+      },
+    });
+    return response.data;
   },
 
   // Lấy danh sách bài viết theo userId (READ)

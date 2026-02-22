@@ -83,9 +83,14 @@ const handleSubmitForm = () => {
 
   // Xử lý Gửi Form
   if (props.mode === "create") {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, "0");
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const year = now.getFullYear();
     emit("create-post", {
       title: title.value,
       content: content.value,
+      creationDate: `${day}/${month}/${year}`,
     });
   } else if (props.mode === "update") {
     emit("update-post", {

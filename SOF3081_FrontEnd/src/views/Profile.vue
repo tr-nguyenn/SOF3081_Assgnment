@@ -11,7 +11,7 @@
           <div class="avatar-container mb-4">
             <img class="avatar-img rounded-pill" src="https://ui-avatars.com/api/?name=T+N&background=random" alt="Avatar" />
           </div>
-          <h4 class="fw-bold mb-1">Nguyễn Trung Nguyên</h4>
+          <h4 class="fw-bold mb-1">{{ user?.name }}</h4>
           <p class="opacity-75 mb-4">{{ user?.role }}</p>
 
           <div class="w-100 border-top border-white border-opacity-25 pt-4">

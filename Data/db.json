@@ -1,59 +1,20 @@
 {
-  "posts": [
-    {
-      "id": "848f",
-      "title": "Tiêu đề 1ee",
-      "content": "ầefaeafeeeeeeeeee vv"
-    },
-    {
-      "id": "4246",
-      "title": "gg",
-      "content": "gg",
-      "image": "",
-      "userId": "d161"
-    },
-    {
-      "id": "4246",
-      "title": "gg",
-      "content": "gg",
-      "image": "",
-      "userId": "d161"
-    },
-    {
-      "id": "4246",
-      "title": "gg",
-      "content": "gg",
-      "image": "",
-      "userId": "d161"
-    },
-    {
-      "id": "4246",
-      "title": "gg",
-      "content": "gg",
-      "image": "",
-      "userId": "d161"
-    },
-    {
-      "id": "4246",
-      "title": "d",
-      "content": "gg",
-      "image": "",
-      "userId": "d161"
-    }
-  ],
   "users": [
     {
-      "id": "d161",
-      "name": "Test 1",
-      "email": "test2@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": "d161",
+      "id": 1,
       "name": "Nguyễn Trung Nguyên",
       "email": "nguyennttd01427@gmail.com",
       "password": "123",
       "role": "admin"
+    },
+    {
+      "id": 2,
+      "name": "Trần Thị B",
+      "email": "test2@gmail.com",
+      "password": "123",
+      "role": "user"
     }
-  ]
+  ],
+  "posts": [],
+  "comments": []
 }

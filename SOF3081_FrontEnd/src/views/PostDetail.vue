@@ -12,77 +12,86 @@
         </nav>
 
         <article>
-          <h1 class="display-5 fw-bold mb-3 article-title">Giới thiệu Vue 3 cơ bản</h1>
+          <h1 class="display-5 fw-bold mb-3 article-title">{{ post?.title }}</h1>
 
           <div class="d-flex align-items-center mb-4 text-muted small border-bottom pb-3">
             <div class="d-flex align-items-center me-4">
-              <img
-                src="https://ui-avatars.com/api/?name=Admin&background=0d3b44&color=fff"
-                class="rounded-circle me-2"
-                width="32"
-                alt="avatar"
-              />
-              <span>Tác giả: <strong>Admin</strong></span>
+              <img src="https://ui-avatars.com/api/?name=Admin&background=0d3b44&color=fff" class="rounded-circle me-2" width="32" alt="avatar" />
+              <span>
+                Tác giả:
+                <strong>{{ post?.user?.name }}</strong>
+              </span>
             </div>
-            <div class="me-4"><i class="bi bi-calendar3 me-1"></i> 12/01/2026</div>
-            <div><i class="bi bi-chat-dots me-1"></i> 15 bình luận</div>
+            <div class="me-4">
+              <i class="bi bi-calendar3 me-1"></i>
+              12/01/2026
+            </div>
+            <div>
+              <i class="bi bi-chat-dots me-1"></i>
+              15 bình luận
+            </div>
           </div>
 
-          <div class="mb-4 position-relative">
-            <img
-              src="https://picsum.photos/id/180/900/500"
-              class="img-fluid rounded-4 shadow-sm"
-              alt="post thumbnail"
-            />
-            <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3 px-3 py-2">Học thuật</span>
+          <div class="mb-4">
+            <img src="https://picsum.photos/id/180/900/500" class="img-fluid rounded-4 shadow-sm" alt="post thumbnail" />
           </div>
 
           <div class="post-content fs-5">
-            <p class="lead">
-              Vue 3 là một framework JavaScript hiện đại, dễ học và mạnh mẽ, được sử dụng để xây dựng giao diện người
-              dùng linh hoạt.
-            </p>
-
-            <p>
-              Với Vue 3, lập trình viên có thể dễ dàng tổ chức code theo component, sử dụng
-              <strong>Composition API</strong> và xây dựng ứng dụng SPA chuyên nghiệp. Đây là bước tiến lớn giúp quản lý
-              logic ứng dụng tốt hơn so với các phiên bản cũ.
-            </p>
-
-            <h4 class="fw-bold mt-5 mb-3 text-primary-dark">🚀 Vì sao nên học Vue 3 ngay bây giờ?</h4>
-            <ul class="list-group list-group-flush mb-4">
-              <li class="list-group-item bg-transparent border-0 ps-0">
-                <i class="bi bi-check-circle-fill text-success me-2"></i> Dễ học, cú pháp rõ ràng và thân thiện.
-              </li>
-              <li class="list-group-item bg-transparent border-0 ps-0">
-                <i class="bi bi-check-circle-fill text-success me-2"></i> Hiệu năng cao nhờ Virtual DOM tối ưu.
-              </li>
-              <li class="list-group-item bg-transparent border-0 ps-0">
-                <i class="bi bi-check-circle-fill text-success me-2"></i> Hệ sinh thái (Vuex, Pinia, Vue Router) cực kỳ
-                mạnh mẽ.
-              </li>
-            </ul>
-
             <blockquote class="blockquote border-start border-4 border-warning ps-4 my-4 bg-light py-3">
-              <p class="mb-0">"Vue 3 không chỉ là một công cụ, nó là một trải nghiệm lập trình hạnh phúc."</p>
+              <p class="mb-0">{{ post?.content }}</p>
             </blockquote>
-
-            <p>
-              Đây là trang chi tiết bài viết mô phỏng cho assignment frontend, tập trung vào việc tối ưu hóa khả năng
-              đọc và trải nghiệm người dùng trên mọi thiết bị.
-            </p>
           </div>
         </article>
 
-        <div class="d-flex justify-content-between align-items-center border-top mt-5 pt-4">
-          <RouterLink to="/" class="btn btn-link text-decoration-none p-0 text-primary-dark fw-bold">
-            <i class="bi bi-arrow-left me-2"></i>Quay lại trang chủ
-          </RouterLink>
-          <div class="share-buttons">
-            <span class="small text-muted me-2">Chia sẻ:</span>
-            <button class="btn btn-sm btn-outline-primary rounded-circle me-2"><i class="bi bi-facebook"></i></button>
-            <button class="btn btn-sm btn-outline-info rounded-circle"><i class="bi bi-twitter"></i></button>
+        <div class="comments-section mt-5 mb-5">
+          <h4 class="fw-bold mb-4">Bình luận (2)</h4>
+
+          <div class="d-flex gap-3 mb-5">
+            <img src="https://ui-avatars.com/api/?name=You&background=random" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
+            <div class="flex-grow-1">
+              <textarea v-model="commentText" class="form-control mb-2 rounded-3 bg-light border-0" rows="3" placeholder="Viết bình luận của bạn..."></textarea>
+              <div class="d-flex justify-content-end">
+                <button class="btn btn-primary rounded-pill px-4 fw-medium" :disabled="!commentText.trim()">Gửi bình luận</button>
+              </div>
+            </div>
           </div>
+
+          <div class="comment-list">
+            <div class="d-flex gap-3 mb-4">
+              <img src="https://ui-avatars.com/api/?name=Nguyen+Van+A" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
+              <div class="flex-grow-1 bg-light p-3 rounded-4">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="fw-bold mb-0 text-primary-dark">Nguyễn Văn A</h6>
+                  <small class="text-muted">
+                    <i class="bi bi-clock me-1"></i>
+                    2 giờ trước
+                  </small>
+                </div>
+                <p class="mb-0 text-dark">Bài viết rất hay và chi tiết. Cảm ơn tác giả đã chia sẻ!</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 mb-4">
+              <img src="https://ui-avatars.com/api/?name=Tran+B" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
+              <div class="flex-grow-1 bg-light p-3 rounded-4">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="fw-bold mb-0 text-primary-dark">Trần Thị B</h6>
+                  <small class="text-muted">
+                    <i class="bi bi-clock me-1"></i>
+                    1 ngày trước
+                  </small>
+                </div>
+                <p class="mb-0 text-dark">Cho mình hỏi thêm về phần cấu trúc thư mục được không ạ?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center border-top mt-5 pt-4">
+          <RouterLink to="/" class="btn btn-link text-decoration-none p-0 text-primary-dark fw-bold">
+            <i class="bi bi-arrow-left me-2"></i>
+            Quay lại trang chủ
+          </RouterLink>
         </div>
       </div>
 
@@ -103,15 +112,11 @@
               <h5 class="fw-bold mb-3">Bài viết mới nhất</h5>
               <div class="d-flex gap-3 mb-3 align-items-center">
                 <img src="https://picsum.photos/id/1/80/80" class="rounded-3" alt="thumb" />
-                <a href="#" class="text-decoration-none text-dark small fw-bold"
-                  >Cách sử dụng Bootstrap 5 hiệu quả trong 2024</a
-                >
+                <a href="#" class="text-decoration-none text-dark small fw-bold">Cách sử dụng Bootstrap 5 hiệu quả trong 2024</a>
               </div>
               <div class="d-flex gap-3 mb-3 align-items-center">
                 <img src="https://picsum.photos/id/2/80/80" class="rounded-3" alt="thumb" />
-                <a href="#" class="text-decoration-none text-dark small fw-bold"
-                  >Lộ trình học Frontend cho người mới bắt đầu</a
-                >
+                <a href="#" class="text-decoration-none text-dark small fw-bold">Lộ trình học Frontend cho người mới bắt đầu</a>
               </div>
             </div>
           </div>
@@ -120,6 +125,48 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
+import type { IPost } from "@/types/Post";
+import postService from "@/services/post.service";
+
+const route = useRoute();
+const toast = useToast();
+const post = ref<IPost>();
+
+// State cho UI mới thêm
+const isLiked = ref(false);
+const likesCount = ref(120);
+const commentText = ref("");
+
+const id = route.params.id as string;
+
+const fetchPostById = async (id: string) => {
+  try {
+    const res = await postService.getPostById(id);
+    post.value = res;
+  } catch (error: any) {
+    toast.error(error.message || "Có lỗi xảy ra tải dữ liệu");
+  }
+};
+
+// Hàm xử lý khi bấm thả tim
+const toggleLike = () => {
+  isLiked.value = !isLiked.value;
+  if (isLiked.value) {
+    likesCount.value++;
+  } else {
+    likesCount.value--;
+  }
+};
+
+onMounted(() => {
+  fetchPostById(id);
+});
+</script>
 
 <style scoped>
 /* Màu chủ đạo đồng bộ với các trang trước */
@@ -138,7 +185,7 @@
 }
 
 .post-content p {
-  line-height: 1.9; /* Khoảng cách dòng rộng rãi để dễ đọc */
+  line-height: 1.9;
   margin-bottom: 1.5rem;
 }
 
@@ -146,7 +193,6 @@
   color: #0d3b44;
 }
 
-/* Hiệu ứng rê chuột cho sidebar link */
 .col-lg-4 a:hover {
   color: #ffc107 !important;
 }
