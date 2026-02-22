@@ -2,6 +2,22 @@ import axiosClient from "@/api/axiosClient";
 import type { IPost } from "@/types/Post";
 
 const postService = {
+  // Lấy tất cả bài viết có phân trang
+  getAllPostPagination: async (page: number = 1, limit: number = 5) => {
+    const url = "/posts";
+
+    const response = await axiosClient.get(url, {
+      params: {
+        _page: page,
+        _per_page: limit,
+      },
+    });
+    return {
+      data: response.data.data,
+      total: response.data.items,
+    };
+  },
+
   // Lấy danh sách bài viết theo userId (READ)
   getAllPostByUser: async (userId: string) => {
     const response = await axiosClient.get<IPost[]>("/posts", {

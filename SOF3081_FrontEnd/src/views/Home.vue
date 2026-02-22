@@ -77,41 +77,13 @@
             </div>
           </div>
 
-          <!-- Filter & Sort Bar -->
-          <div class="filter-bar mb-4">
-            <div class="card border-0 shadow-sm rounded-3">
-              <div class="card-body">
-                <div class="row g-3 align-items-center">
-                  <div class="col-md-7">
-                    <div class="position-relative">
-                      <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                      <input type="text" class="form-control form-control-lg border-0 bg-light ps-5 rounded-pill" placeholder="Tìm kiếm bài viết, tác giả..." />
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <select class="form-select form-select-lg border-0 bg-light rounded-pill">
-                      <option selected>Mới nhất</option>
-                      <option>Phổ biến nhất</option>
-                      <option>Cũ nhất</option>
-                      <option>Nhiều bình luận</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Posts Grid -->
-          <div v-for="post in posts" class="posts-grid">
+          <div v-for="post in posts" class="posts-grid" :key="post.id">
             <article class="post-card card border-0 shadow-sm rounded-4 mb-4 hover-lift">
               <div class="row g-0">
                 <div class="col-md-4">
                   <div class="post-thumbnail">
                     <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600" class="img-fluid rounded-start-4 h-100 w-100" style="object-fit: cover" alt="Post" />
-                    <div class="reading-time">
-                      <i class="bi bi-clock-fill me-1"></i>
-                      5 phút đọc
-                    </div>
                   </div>
                 </div>
                 <div class="col-md-8">
@@ -150,11 +122,6 @@
                       </div>
                     </div>
 
-                    <span class="badge bg-success-subtle text-success rounded-pill mb-2">
-                      <i class="bi bi-compass me-1"></i>
-                      Du lịch
-                    </span>
-
                     <h3 class="card-title h5 fw-bold mb-2 lh-base">
                       <a href="#" class="text-decoration-none text-dark stretched-link">{{ post.title }}</a>
                     </h3>
@@ -183,29 +150,20 @@
 
           <!-- Pagination -->
           <nav aria-label="Pagination" class="mt-5">
-            <ul class="pagination pagination-lg justify-content-center gap-2">
+            <!-- Prev -->
+            <ul class="pagination pagination-lg justify-content-center gap-2" :class="{ disabled: page === 1 }">
               <li class="page-item disabled">
-                <a class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">
+                <a @click="changePage(page - 1)" class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">
                   <i class="bi bi-chevron-left"></i>
                 </a>
               </li>
-              <li class="page-item active">
-                <a class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">1</a>
+              <!-- Page number -->
+              <li class="page-item" v-for="n in totalPages" :key="n" :class="{ active: n === page }">
+                <a @click="changePage(n)" class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">{{ n }}</a>
               </li>
+              <!-- Next -->
               <li class="page-item">
-                <a class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">4</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">5</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">
+                <a @click="changePage(page + 1)" class="page-link rounded-circle" href="#" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center">
                   <i class="bi bi-chevron-right"></i>
                 </a>
               </li>
@@ -324,25 +282,35 @@
   </div>
 </template>
 
-<!-- <template>
-  <div v-for="post in posts">
-    <h1>{{ post.title }}</h1>
-  </div>
-</template> -->
-
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useToast } from "vue-toastification";
 import type { IPost } from "@/types/Post";
-import PostService from "@/services/post.service";
+import postService from "@/services/post.service";
 
+const toast = useToast();
+const page = ref(1);
+const limit = 5;
+const totalPages = ref(0);
 const posts = ref<IPost[]>([]);
+
 const fetchPost = async () => {
   try {
-    const response = await PostService.getAll();
-    posts.value = await response.data;
-  } catch (error) {
-    console.log(error);
+    const res = await postService.getAllPostPagination(page.value, limit);
+    posts.value = res.data;
+    totalPages.value = Math.ceil(res.total / limit);
+    console.log(totalPages.value);
+  } catch (error: any) {
+    toast.error(error.message || "Có lỗi xảy ra tải dữ liệu");
   }
+
+  console.log(totalPages);
+};
+
+const changePage = (newPage: number) => {
+  if (newPage < 1 || newPage > totalPages.value) return;
+  page.value = newPage;
+  fetchPost();
 };
 
 //   gọi API khi component được mount

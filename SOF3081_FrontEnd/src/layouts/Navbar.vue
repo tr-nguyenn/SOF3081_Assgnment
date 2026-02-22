@@ -68,6 +68,12 @@
                     Quản lý bài viết
                   </RouterLink>
                 </li>
+                <li v-if="user.role === 'admin'">
+                  <RouterLink class="dropdown-item d-flex align-items-center gap-2 py-2" to="/admin">
+                    <i class="bi bi-shield-lock text-secondary"></i>
+                    Trang quản trị
+                  </RouterLink>
+                </li>
                 <li><hr class="dropdown-divider my-1" /></li>
                 <li>
                   <button class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" @click="logout">
