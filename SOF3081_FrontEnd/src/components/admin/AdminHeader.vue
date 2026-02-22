@@ -8,8 +8,19 @@
     </div>
 
     <div class="d-flex align-items-center gap-3">
-      <button class="btn btn-primary rounded-pill px-4 fw-medium">Upgrade To Pro</button>
+      <button class="btn btn-primary rounded-pill px-4 fw-medium">{{ user }}</button>
       <img src="https://i.pravatar.cc/150?img=11" alt="avatar" class="rounded-circle" width="40" height="40" />
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+const user = ref("");
+const userStr = localStorage.getItem("user");
+if (userStr) {
+  const userObj = JSON.parse(userStr);
+  user.value = userObj.name;
+}
+</script>
