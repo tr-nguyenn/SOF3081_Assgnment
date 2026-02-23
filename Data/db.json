@@ -15,6 +15,69 @@
       "role": "user"
     }
   ],
-  "posts": [],
-  "comments": []
+  "posts": [
+    {
+      "title": "t",
+      "content": "e",
+      "creationDate": "23/02/2026",
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "title": "e",
+      "content": "e",
+      "creationDate": "23/02/2026",
+      "userId": 1,
+      "id": 2
+    },
+    {
+      "title": "rrr",
+      "content": "rrrrrrrrrrr",
+      "creationDate": "23/02/2026",
+      "userId": 2,
+      "id": 3
+    }
+  ],
+  "comments": [
+    {
+      "postId": "1",
+      "userId": 1,
+      "userName": "Nguyễn Trung Nguyên",
+      "content": "hi",
+      "createAt": "10:42:27 23/2/2026",
+      "id": 1
+    },
+    {
+      "postId": "1",
+      "userId": 2,
+      "userName": "Trần Thị B",
+      "content": "hello",
+      "createAt": "10:46:06 23/2/2026",
+      "id": 2
+    },
+    {
+      "postId": "2",
+      "userId": 2,
+      "userName": "Trần Thị B",
+      "content": "teee",
+      "createAt": "10:46:42 23/2/2026",
+      "id": 3
+    },
+    {
+      "postId": "3",
+      "userId": 2,
+      "userName": "Trần Thị B",
+      "content": "1",
+      "createAt": "10:48:21 23/2/2026",
+      "id": 4
+    },
+    {
+      "postId": "3",
+      "userId": 1,
+      "userName": "Nguyễn Trung Nguyên",
+      "content": "eeeeee",
+      "createAt": "10:48:47 23/2/2026",
+      "id": 5
+    }
+  ]
 }

@@ -24,7 +24,7 @@ const router = createRouter({
         },
         {
           path: "/post-manager",
-          name: "PostManager",
+          name: "PostManagerById",
           component: PostManager,
           meta: { requiresAuth: true },
         },

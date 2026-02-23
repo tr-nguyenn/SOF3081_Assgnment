@@ -24,11 +24,11 @@
             </div>
             <div class="me-4">
               <i class="bi bi-calendar3 me-1"></i>
-              12/01/2026
+              {{ post?.creationDate }}
             </div>
             <div>
               <i class="bi bi-chat-dots me-1"></i>
-              15 bình luận
+              {{ comments.length }} bình luận
             </div>
           </div>
 
@@ -44,44 +44,30 @@
         </article>
 
         <div class="comments-section mt-5 mb-5">
-          <h4 class="fw-bold mb-4">Bình luận (2)</h4>
+          <h4 class="fw-bold mb-4">Bình luận ({{ comments.length }})</h4>
 
           <div class="d-flex gap-3 mb-5">
             <img src="https://ui-avatars.com/api/?name=You&background=random" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
             <div class="flex-grow-1">
               <textarea v-model="commentText" class="form-control mb-2 rounded-3 bg-light border-0" rows="3" placeholder="Viết bình luận của bạn..."></textarea>
               <div class="d-flex justify-content-end">
-                <button class="btn btn-primary rounded-pill px-4 fw-medium" :disabled="!commentText.trim()">Gửi bình luận</button>
+                <button @click="submitComment" class="btn btn-primary rounded-pill px-4 fw-medium" :disabled="!commentText.trim()">Gửi bình luận</button>
               </div>
             </div>
           </div>
 
-          <div class="comment-list">
+          <div class="comment-list" v-for="item in comments" :key="comments.id">
             <div class="d-flex gap-3 mb-4">
               <img src="https://ui-avatars.com/api/?name=Nguyen+Van+A" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
               <div class="flex-grow-1 bg-light p-3 rounded-4">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <h6 class="fw-bold mb-0 text-primary-dark">Nguyễn Văn A</h6>
+                  <h6 class="fw-bold mb-0 text-primary-dark">{{ item.userName }}</h6>
                   <small class="text-muted">
                     <i class="bi bi-clock me-1"></i>
                     2 giờ trước
                   </small>
                 </div>
-                <p class="mb-0 text-dark">Bài viết rất hay và chi tiết. Cảm ơn tác giả đã chia sẻ!</p>
-              </div>
-            </div>
-
-            <div class="d-flex gap-3 mb-4">
-              <img src="https://ui-avatars.com/api/?name=Tran+B" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
-              <div class="flex-grow-1 bg-light p-3 rounded-4">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <h6 class="fw-bold mb-0 text-primary-dark">Trần Thị B</h6>
-                  <small class="text-muted">
-                    <i class="bi bi-clock me-1"></i>
-                    1 ngày trước
-                  </small>
-                </div>
-                <p class="mb-0 text-dark">Cho mình hỏi thêm về phần cấu trúc thư mục được không ạ?</p>
+                <p class="mb-0 text-dark">{{ item.content }}</p>
               </div>
             </div>
           </div>
@@ -132,18 +118,19 @@ import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
 import type { IPost } from "@/types/Post";
 import postService from "@/services/post.service";
+import commentService from "@/services/comment.service";
+import { JsxEmit } from "typescript";
 
 const route = useRoute();
 const toast = useToast();
 const post = ref<IPost>();
 
-// State cho UI mới thêm
-const isLiked = ref(false);
-const likesCount = ref(120);
 const commentText = ref("");
-
+const comments = ref([]);
+const currentUser = ref(null);
 const id = route.params.id as string;
 
+//Lấy chi tiết bài viết
 const fetchPostById = async (id: string) => {
   try {
     const res = await postService.getPostById(id);
@@ -153,23 +140,53 @@ const fetchPostById = async (id: string) => {
   }
 };
 
-// Hàm xử lý khi bấm thả tim
-const toggleLike = () => {
-  isLiked.value = !isLiked.value;
-  if (isLiked.value) {
-    likesCount.value++;
-  } else {
-    likesCount.value--;
+//Lấy danh sách bình luận của bài viết này
+const fetchComments = async () => {
+  try {
+    comments.value = await commentService.getCommentsByPostId(id);
+  } catch (error) {
+    toast.error("Lỗi khi tải bình luận: " + error);
   }
 };
 
+//Gửi bình luận
+const submitComment = async () => {
+  if (!commentText.value.trim()) {
+    toast.error("Bình luận không được bỏ trống");
+    return;
+  } else if (!currentUser.value) {
+    toast.error("Vui lòng đăng nhập trước khi bình luận!");
+    return;
+  }
+
+  const newComment = {
+    postId: id,
+    userId: currentUser.value.id,
+    userName: currentUser.value.name,
+    content: commentText.value,
+    createAt: new Date().toLocaleString("vi-VN"),
+  };
+  try {
+    await commentService.createComment(newComment);
+    toast.success("Đã gửi bình luận");
+    commentText.value = "";
+    fetchComments();
+  } catch (error) {
+    toast.error("Lỗi khi gửi bình luận");
+  }
+};
 onMounted(() => {
+  const userStr = localStorage.getItem("user");
+  if (userStr) {
+    currentUser.value = JSON.parse(userStr);
+  }
+
   fetchPostById(id);
+  fetchComments();
 });
 </script>
 
 <style scoped>
-/* Màu chủ đạo đồng bộ với các trang trước */
 .text-primary-dark {
   color: #0d3b44;
 }
