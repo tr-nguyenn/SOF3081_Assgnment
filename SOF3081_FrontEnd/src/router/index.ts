@@ -76,6 +76,16 @@ const router = createRouter({
           name: "Dashboard",
           component: () => import("@/views/Dashboard.vue"),
         },
+        {
+          path: "posts-manager",
+          name: "PostManager",
+          component: () => import("@/views/admin/PostsManager.vue"),
+        },
+        {
+          path: "user-manager",
+          name: "UserManager",
+          component: () => import("@/views/admin/UserManager.vue"),
+        },
       ],
     },
   ],

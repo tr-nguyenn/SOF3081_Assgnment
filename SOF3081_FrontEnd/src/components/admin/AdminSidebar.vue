@@ -15,15 +15,15 @@
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/admin/posts" class="nav-link text-dark fw-medium d-flex align-items-center" active-class="active bg-primary-subtle text-primary">
+        <router-link to="/admin/posts-manager" class="nav-link text-dark fw-medium d-flex align-items-center" active-class="active bg-primary-subtle text-primary">
           <i class="bi bi-file-earmark-text me-3 fs-5"></i>
-          Quản lý người dùng
+          Quản lí bài viết
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/admin/profile" class="nav-link text-dark fw-medium d-flex align-items-center" active-class="active bg-primary-subtle text-primary">
+        <router-link to="/admin/user-manager" class="nav-link text-dark fw-medium d-flex align-items-center" active-class="active bg-primary-subtle text-primary">
           <i class="bi bi-person-circle me-3 fs-5"></i>
-          Quản lí bài viết
+          Quản lý người dùng
         </router-link>
       </li>
     </ul>
