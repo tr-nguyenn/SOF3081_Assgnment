@@ -6,6 +6,7 @@
       </h5>
       <button type="button" class="btn-close" @click="close"></button>
     </div>
+
     <div class="modal-body">
       <div class="mb-4">
         <label class="form-label text-black">Tiêu đề:</label>
@@ -21,8 +22,9 @@
 
       <div class="mb-3">
         <label class="form-label text-black">Ảnh bài viết:</label>
-        <input type="file" class="form-control" accept="image/jpeg,image/png" />
-        <img class="img-thumbnail mt-2" style="max-height: 150px" />
+        <input ref="fileInputRef" type="file" class="form-control" accept="image/jpeg,image/png" @change="handleImageUpload" />
+
+        <img v-if="image" :src="image" class="img-thumbnail mt-2" style="max-height: 150px; object-fit: cover" alt="Preview" />
       </div>
     </div>
 
@@ -44,65 +46,86 @@ const props = defineProps<{
   mode: "create" | "update";
 }>();
 
-// 1. Khai báo Emit cho cả Create và Update
 const emit = defineEmits(["create-post", "update-post"]);
 
 const baseModalRef = ref<InstanceType<typeof BaseModal> | null>(null);
+const fileInputRef = ref<HTMLInputElement | null>(null); // Để reset thẻ input file
 
-// 2. State quản lý form
-const postId = ref(""); // Rất quan trọng: cần lưu ID để biết đang sửa bài nào
+// State quản lý form
+const postId = ref("");
 const title = ref("");
 const content = ref("");
+const image = ref(""); // Lưu trữ chuỗi Base64 của ảnh
 const titleError = ref(false);
 const contentError = ref(false);
 
-// 3. Hàm nhận dữ liệu từ PostManager truyền vào khi bấm "Sửa"
+// Xử lý khi người dùng chọn ảnh
+const handleImageUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      // Ép kiểu kết quả về string (Base64) và gán vào biến image
+      image.value = e.target?.result as string;
+    };
+    reader.readAsDataURL(file); // Đọc file dưới dạng Data URL
+  }
+};
+
 const setFormData = (post: IPost) => {
   postId.value = post.id;
   title.value = post.title;
   content.value = post.content;
-  // Reset lỗi nếu có
+  image.value = post.image || ""; // Nạp ảnh cũ nếu có
+
   titleError.value = false;
   contentError.value = false;
 };
 
-// 4. Hàm reset form về trống (Dùng khi tạo mới hoặc đóng Modal)
 const resetForm = () => {
   postId.value = "";
   title.value = "";
   content.value = "";
+  image.value = "";
   titleError.value = false;
   contentError.value = false;
+
+  // Reset lại ô chọn file để người dùng có thể chọn lại ảnh cũ nếu muốn
+  if (fileInputRef.value) {
+    fileInputRef.value.value = "";
+  }
 };
 
 const handleSubmitForm = () => {
-  // Validate input
   titleError.value = !title.value.trim();
   contentError.value = !content.value.trim();
   if (titleError.value || contentError.value) return;
 
-  // Xử lý Gửi Form
   if (props.mode === "create") {
     const now = new Date();
     const day = String(now.getDate()).padStart(2, "0");
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const year = now.getFullYear();
+
     emit("create-post", {
       title: title.value,
       content: content.value,
+      image: image.value, // Truyền thêm ảnh
       creationDate: `${day}/${month}/${year}`,
     });
   } else if (props.mode === "update") {
     emit("update-post", {
-      id: postId.value, // Trả về kèm ID để gọi API update
+      id: postId.value,
       title: title.value,
       content: content.value,
+      image: image.value, // Truyền thêm ảnh
     });
   }
 };
 
 const open = () => {
-  // Nếu mở lên để tạo mới thì xóa trắng form cũ
   if (props.mode === "create") {
     resetForm();
   }
@@ -111,9 +134,8 @@ const open = () => {
 
 const close = () => {
   baseModalRef.value?.close();
-  resetForm(); // Đóng xong thì clear form
+  resetForm();
 };
 
-// 5. Expose hàm setFormData ra ngoài để component cha (PostManager) có thể gọi
 defineExpose({ open, close, setFormData });
 </script>

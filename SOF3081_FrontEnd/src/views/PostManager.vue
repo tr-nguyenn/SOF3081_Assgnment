@@ -128,12 +128,8 @@ const handleDeletePost = async (postId: string) => {
 
   if (result.isConfirmed) {
     try {
-      // Gọi API xóa bài viết theo ID
       await postService.delete(postId);
-
       toast.success("Xóa bài viết thành công!");
-
-      // Tải lại danh sách bài viết sau khi xóa
       await fetchPosts();
     } catch (error: any) {
       toast.error(error?.message || "Có lỗi xảy ra khi xóa bài viết");

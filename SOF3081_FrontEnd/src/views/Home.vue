@@ -83,7 +83,7 @@
               <div class="row g-0">
                 <div class="col-md-4">
                   <div class="post-thumbnail">
-                    <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600" class="img-fluid rounded-start-4 h-100 w-100" style="object-fit: cover" alt="Post" />
+                    <img v-if="post.image" :src="post.image" class="img-fluid rounded-start-4 h-100 w-100" style="object-fit: cover" alt="Post" />
                   </div>
                 </div>
                 <div class="col-md-8">
@@ -271,6 +271,7 @@ import { useToast } from "vue-toastification";
 import type { IPost } from "@/types/Post";
 import postService from "@/services/post.service";
 import { RouterLink } from "vue-router";
+import { p } from "vue-router/dist/router-CWoNjPRp.mjs";
 
 const toast = useToast();
 const page = ref(1);
