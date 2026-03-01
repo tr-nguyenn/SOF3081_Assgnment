@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top py-3">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">Blog</a>
+      <a class="navbar-brand fw-bold" href="#">Vue Blog</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -16,9 +16,6 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <RouterLink class="nav-link" to="/">Trang chủ</RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/post/1">Bài viết</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/post-manager">Quản lý bài viết</RouterLink>

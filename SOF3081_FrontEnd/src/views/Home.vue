@@ -271,7 +271,6 @@ import { useToast } from "vue-toastification";
 import type { IPost } from "@/types/Post";
 import postService from "@/services/post.service";
 import { RouterLink } from "vue-router";
-import { p } from "vue-router/dist/router-CWoNjPRp.mjs";
 
 const toast = useToast();
 const page = ref(1);
@@ -304,7 +303,6 @@ onMounted(() => {
 <style scoped>
 .card-text-clamp {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 
   overflow: hidden;
