@@ -33,7 +33,7 @@
           </div>
 
           <div class="mb-4">
-            <img src="https://picsum.photos/id/180/900/500" class="img-fluid rounded-4 shadow-sm" alt="post thumbnail" />
+            <img :src="post?.image" class="img-fluid rounded-4 shadow-sm" alt="post thumbnail" />
           </div>
 
           <div class="post-content fs-5">
@@ -49,14 +49,14 @@
           <div class="d-flex gap-3 mb-5">
             <img src="https://ui-avatars.com/api/?name=You&background=random" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
             <div class="flex-grow-1">
-              <textarea v-model="commentText" class="form-control mb-2 rounded-3 bg-light border-0" rows="3" placeholder="Viết bình luận của bạn..."></textarea>
+              <textarea v-model="commentText" class="form-control mb-2 rounded-3 bg-light border-2" rows="3" placeholder="Viết bình luận của bạn..."></textarea>
               <div class="d-flex justify-content-end">
                 <button @click="submitComment" class="btn btn-primary rounded-pill px-4 fw-medium" :disabled="!commentText.trim()">Gửi bình luận</button>
               </div>
             </div>
           </div>
 
-          <div class="comment-list" v-for="item in comments" :key="comments.id">
+          <div class="comment-list" v-for="item in comments" :key="item.id">
             <div class="d-flex gap-3 mb-4">
               <img src="https://ui-avatars.com/api/?name=Nguyen+Van+A" class="rounded-circle shadow-sm" width="48" height="48" alt="avatar" />
               <div class="flex-grow-1 bg-light p-3 rounded-4">
@@ -116,22 +116,22 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
-import type { IPost } from "@/types/Post";
 import postService from "@/services/post.service";
 import commentService from "@/services/comment.service";
-import { JsxEmit } from "typescript";
+import type { IPost } from "@/types/Post";
+import type { IComment } from "@/types/Comment";
+import type { IUser } from "@/types/User";
 
 const route = useRoute();
 const toast = useToast();
 const post = ref<IPost>();
 
 const commentText = ref("");
-const comments = ref([]);
-const currentUser = ref(null);
-const id = route.params.id as string;
+const comments = ref<IComment[]>([]);
+const currentUser = ref<IUser | null>(null);
+const id = Number(route.params.id) as number;
 
-//Lấy chi tiết bài viết
-const fetchPostById = async (id: string) => {
+const fetchPostById = async (id: number) => {
   try {
     const res = await postService.getPostById(id);
     post.value = res;
@@ -140,7 +140,6 @@ const fetchPostById = async (id: string) => {
   }
 };
 
-//Lấy danh sách bình luận của bài viết này
 const fetchComments = async () => {
   try {
     comments.value = await commentService.getCommentsByPostId(id);
@@ -149,7 +148,6 @@ const fetchComments = async () => {
   }
 };
 
-//Gửi bình luận
 const submitComment = async () => {
   if (!commentText.value.trim()) {
     toast.error("Bình luận không được bỏ trống");
@@ -159,7 +157,7 @@ const submitComment = async () => {
     return;
   }
 
-  const newComment = {
+  const newComment: IComment = {
     postId: id,
     userId: currentUser.value.id,
     userName: currentUser.value.name,
@@ -175,12 +173,12 @@ const submitComment = async () => {
     toast.error("Lỗi khi gửi bình luận");
   }
 };
+
 onMounted(() => {
   const userStr = localStorage.getItem("user");
   if (userStr) {
     currentUser.value = JSON.parse(userStr);
   }
-
   fetchPostById(id);
   fetchComments();
 });
@@ -216,6 +214,8 @@ onMounted(() => {
 
 .breadcrumb-item + .breadcrumb-item::before {
   content: "›";
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  vertical-align: middle;
+  line-height: 0.9;
 }
 </style>

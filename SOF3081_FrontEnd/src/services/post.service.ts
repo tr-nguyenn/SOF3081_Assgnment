@@ -20,7 +20,7 @@ const postService = {
   },
 
   //Lấy ra chi tiết bài viết theo id bài viết
-  getPostById: async (id: string) => {
+  getPostById: async (id: number) => {
     const response = await axiosClient.get<IPost>(`/posts/${id}`, {
       params: {
         _expand: "user",

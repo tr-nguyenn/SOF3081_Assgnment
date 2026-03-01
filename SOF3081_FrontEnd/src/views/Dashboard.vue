@@ -75,21 +75,17 @@ import { ref, onMounted } from "vue";
 import Chart from "chart.js/auto";
 import axiosClient from "@/api/axiosClient";
 
-// 1. CHỈ GIỮ LẠI 2 BIẾN CƠ BẢN
 const totalPosts = ref(0);
 const totalComments = ref(0);
 
 const barChartRef = ref<HTMLCanvasElement | null>(null);
 const doughnutChartRef = ref<HTMLCanvasElement | null>(null);
 
-// 2. HÀM GỌI API ĐƠN GIẢN HÓA
 const fetchDashboardData = async () => {
   try {
-    // Lấy tổng số bài viết
     const postsRes = await axiosClient.get("/posts");
     totalPosts.value = postsRes.data.length;
 
-    // Lấy tổng số bình luận
     const commentsRes = await axiosClient.get("/comments");
     totalComments.value = commentsRes.data.length;
   } catch (error) {
@@ -99,8 +95,6 @@ const fetchDashboardData = async () => {
 
 onMounted(() => {
   fetchDashboardData();
-
-  // 3. CẤU HÌNH BIỂU ĐỒ CƠ BẢN (Chỉ để 1 cột dữ liệu)
   if (barChartRef.value) {
     new Chart(barChartRef.value, {
       type: "bar",
@@ -108,25 +102,23 @@ onMounted(() => {
         labels: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
         datasets: [
           {
-            label: "Số lượng bài mới", // Đổi tên label
-            data: [5, 8, 12, 7, 10, 15, 9], // Dữ liệu giả
+            label: "Số lượng bài mới",
+            data: [5, 8, 12, 7, 10, 15, 9],
             backgroundColor: "#0d6efd",
             borderRadius: 6,
             barPercentage: 0.6,
           },
-          // Đã xóa dataset thứ 2 (màu vàng)
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } }, // Ẩn chú thích cho gọn
+        plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5] } }, x: { grid: { display: false } } },
       },
     });
   }
 
-  // Biểu đồ tròn giữ nguyên để trang trí
   if (doughnutChartRef.value) {
     new Chart(doughnutChartRef.value, {
       type: "doughnut",
@@ -141,7 +133,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Giữ lại các màu nền phụ trợ nếu cần dùng sau này */
 .bg-primary-subtle {
   background-color: #e0f2fe !important;
 }

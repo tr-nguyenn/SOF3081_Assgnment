@@ -2,7 +2,7 @@ import axiosClient from "@/api/axiosClient";
 
 const commentService = {
   // Lấy danh sách bình luận theo ID bài viết
-  getCommentsByPostId: async (postId: string) => {
+  getCommentsByPostId: async (postId: number) => {
     const response = await axiosClient.get("/comments", {
       params: { postId },
     });
