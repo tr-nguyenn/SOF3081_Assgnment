@@ -14,7 +14,7 @@ const userService = {
   },
 
   update: async (id: number | string, data: any) => {
-    const response = await axiosClient.put(`/users/${id}`, data);
+    const response = await axiosClient.patch(`/users/${id}`, data);
     return response.data;
   },
 

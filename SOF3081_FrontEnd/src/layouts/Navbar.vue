@@ -39,13 +39,14 @@
 
           <template v-else>
             <div class="dropdown">
-              <button class="btn btn-light btn-sm dropdown-toggle d-flex align-items-center gap-2 py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://i.pravatar.cc/30" class="rounded-circle flex-shrink-0" width="28" height="28" alt="avatar" />
+              <button class="d-flex align-items-center gap-1 bg-transparent border-0 shadow-none p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img :src="user.avatar" class="rounded-circle flex-shrink-0" width="32" height="32" style="object-fit: cover; border: 2px solid white" alt="avatar" />
               </button>
+
               <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="min-width: 200px">
                 <li class="px-3 py-2 border-bottom">
                   <div class="d-flex align-items-center gap-2">
-                    <img src="https://i.pravatar.cc/40" class="rounded-circle" width="36" height="36" alt="avatar" />
+                    <img :src="user.avatar" class="rounded-circle" width="36" height="36" style="object-fit: cover" alt="avatar" />
                     <div class="overflow-hidden">
                       <div class="fw-semibold text-truncate small">{{ user.name }}</div>
                       <div class="text-muted text-truncate" style="font-size: 0.75rem">{{ user.email }}</div>

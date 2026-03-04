@@ -89,7 +89,7 @@
                 <div class="col-md-8">
                   <div class="card-body p-4">
                     <div class="d-flex align-items-center mb-3">
-                      <img src="https://i.pravatar.cc/150?img=33" class="rounded-circle me-2" width="32" height="32" alt="Avatar" />
+                      <img :src="post.user?.avatar" class="rounded-circle me-2" width="32" height="32" alt="Avatar" />
                       <div class="me-auto">
                         <div class="fw-semibold small">{{ post.user?.name }}</div>
                         <div class="text-muted" style="font-size: 0.75rem">2 ngày trước</div>
@@ -294,7 +294,6 @@ const changePage = (newPage: number) => {
   fetchPost();
 };
 
-//   gọi API khi component được mount
 onMounted(() => {
   fetchPost();
 });

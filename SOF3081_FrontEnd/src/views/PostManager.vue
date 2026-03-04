@@ -3,7 +3,6 @@
     <strong>Lỗi!</strong>
     {{ errorMessage }}
   </div>
-
   <div class="container-fluid py-4">
     <div class="card shadow-sm mb-4">
       <div class="card-body">
@@ -20,7 +19,6 @@
         </div>
       </div>
     </div>
-
     <PostTable :posts="posts" @edit="openUpdate" @delete="handleDeletePost" />
   </div>
   <PostModal ref="modalRef" :mode="mode" @create-post="handleCreatePost" @update-post="handleUpdatePost" />
@@ -46,13 +44,10 @@ const posts = ref<IPost[]>([]);
 const errorMessage = ref("");
 const currentUser = ref<IUser | null>(null);
 
-// Tách riêng hàm fetch data để có thể gọi lại sau khi thêm/sửa/xóa
 const fetchPosts = async () => {
   if (!currentUser.value?.id) return;
-
   try {
     errorMessage.value = "";
-    // Service đã return response.data nên ta chỉ cần gán thẳng
     const data = await postService.getAllPostByUser(currentUser.value.id);
     posts.value = data;
   } catch (error: any) {
@@ -64,14 +59,12 @@ onMounted(async () => {
   const userStr = localStorage.getItem("user");
   if (!userStr) {
     router.replace("/login");
-    return; // QUAN TRỌNG: Dừng thực thi code bên dưới nếu chưa đăng nhập
+    return;
   }
   currentUser.value = JSON.parse(userStr);
-  // Gọi hàm lấy dữ liệu
   await fetchPosts();
 });
 
-// --- Logic Create ---
 const openCreate = () => {
   mode.value = "create";
   modalRef.value?.open();
@@ -79,9 +72,7 @@ const openCreate = () => {
 
 const handleCreatePost = async (data: IPost) => {
   try {
-    // Tự động gán userId của người đang đăng nhập vào dữ liệu bài viết
     const postData = { ...data, userId: currentUser.value?.id };
-
     await postService.create(postData);
     await fetchPosts();
     modalRef.value?.close();
@@ -104,7 +95,7 @@ const openUpdate = (post: IPost) => {
 const handleUpdatePost = async (data: IPost) => {
   try {
     const updateData = { ...data, userId: currentUser.value?.id };
-    await postService.update(data.id, updateData);
+    await postService.update(data.id!, updateData);
     await fetchPosts();
     modalRef.value?.close();
     toast.success("Cập nhật bài viết thành công!");
@@ -113,7 +104,6 @@ const handleUpdatePost = async (data: IPost) => {
   }
 };
 
-// --- Logic Delete ---
 const handleDeletePost = async (postId: string) => {
   const result = await Swal.fire({
     title: "Bạn có chắc không?",

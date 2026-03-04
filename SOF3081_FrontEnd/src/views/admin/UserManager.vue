@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
-import UserModal from "@/views/admin/user/UserModal.vue"; // Điều chỉnh đường dẫn theo project của bạn
+import UserModal from "@/views/admin/user/UserModal.vue";
 import UserTable from "@/views/admin/user/UserTable.vue";
 import userService from "@/views/admin/services/user.service";
 import type { IUser } from "@/types/User";
@@ -74,7 +74,6 @@ const handleCreateUser = async (data: IUser) => {
   }
 };
 
-// --- Logic Update ---
 const openUpdate = (user: IUser) => {
   mode.value = "update";
   modalRef.value?.open();
@@ -85,7 +84,6 @@ const openUpdate = (user: IUser) => {
 
 const handleUpdateUser = async (data: IUser) => {
   try {
-    // Ép kiểu id để đảm bảo an toàn vì IUser.id có thể undefined
     if (!data.id) return;
     await userService.update(data.id, data);
     await fetchUsers();

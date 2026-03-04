@@ -57,8 +57,8 @@
                 <input v-model="confirmPassword" type="password" class="form-control bg-dark text-white border-secondary py-2" required />
               </div>
 
-              <button type="submit" class="btn btn-primary w-100 py-2" :disabled="isLoading">
-                {{ isLoading ? "Đang gửi mã..." : "Đăng ký" }}
+              <button type="submit" class="btn btn-primary w-100 py-2" :disabled="isSendingEmail || isLoading">
+                {{ isSendingEmail ? "Đang gửi mã..." : "Đăng ký" }}
               </button>
             </form>
 
@@ -99,8 +99,8 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import emailjs from "@emailjs/browser";
 import userService from "@/services/user.service";
+import { useEmailVerification } from "@/composables/useEmailVerification"; // Import composable
 
 const router = useRouter();
 const toast = useToast();
@@ -111,19 +111,13 @@ const user = ref({
   password: "",
   role: "user",
 });
-
 const confirmPassword = ref("");
-const isLoading = ref(false);
-
-// State cho phần xác thực
-const isVerifying = ref(false);
-const generatedCode = ref("");
+const isLoading = ref(false); // Trạng thái loading khi call API Backend (Kiểm tra email tồn tại, lưu user)
+const isVerifying = ref(false); // Trạng thái chuyển đổi UI
 const inputCode = ref("");
 
-// Cấu hình EmailJS - THAY THẾ BẰNG THÔNG TIN TỪ DASHBOARD EMAILJS CỦA BẠN
-const EMAILJS_SERVICE_ID = "service_0m3cnph";
-const EMAILJS_TEMPLATE_ID = "template_xeluw1q";
-const EMAILJS_PUBLIC_KEY = "pAaqtVZreM_lL4t6Z";
+// Sử dụng Composable
+const { isSendingEmail, sendVerificationEmail, verifyCode } = useEmailVerification();
 
 const handleRegister = async () => {
   if (user.value.password !== confirmPassword.value) {
@@ -139,51 +133,36 @@ const handleRegister = async () => {
   try {
     isLoading.value = true;
 
-    // Kiểm tra email tồn tại
+    // Kiểm tra email đã tồn tại chưa
     const existingUsers = await userService.login(user.value.email);
     if (existingUsers && existingUsers.length > 0) {
       toast.error("Email này đã được sử dụng. Vui lòng dùng email khác!");
-      isLoading.value = false;
       return;
     }
-
-    // Tạo mã xác nhận 6 số ngẫu nhiên
-    generatedCode.value = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // Chuẩn bị dữ liệu gửi qua EmailJS
-    const templateParams = {
-      to_name: user.value.name,
-      to_email: user.value.email,
-      verify_code: generatedCode.value,
-    };
-
-    // Gửi email
-    // Tìm đoạn code này trong hàm handleRegister và sửa lại:
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, {
-      publicKey: EMAILJS_PUBLIC_KEY, // Truyền dưới dạng object
-    });
-    toast.success("Mã xác thực đã được gửi đến email của bạn!");
-    isVerifying.value = true; // Chuyển sang giao diện nhập mã
   } catch (error) {
-    console.error("Lỗi gửi email:", error);
-    toast.error("Không thể gửi email xác nhận. Vui lòng thử lại!");
+    toast.error("Lỗi kiểm tra dữ liệu từ máy chủ.");
+    return;
   } finally {
     isLoading.value = false;
+  }
+
+  // Gọi hàm gửi email từ Composable
+  const isSuccess = await sendVerificationEmail(user.value.name, user.value.email);
+
+  // Nếu gửi thành công thì mới chuyển sang form nhập mã
+  if (isSuccess) {
+    isVerifying.value = true;
   }
 };
 
 const handleVerify = async () => {
-  if (inputCode.value !== generatedCode.value) {
-    toast.error("Mã xác nhận không chính xác!");
-    return;
-  }
+  // Gọi hàm kiểm tra mã từ Composable
+  const isValid = verifyCode(inputCode.value);
+  if (!isValid) return;
 
   try {
     isLoading.value = true;
-
-    // Lưu user vào database khi mã hợp lệ
     await userService.register(user.value);
-
     toast.success("Đăng ký thành công! Vui lòng đăng nhập.");
     router.push("/login");
   } catch (error) {
@@ -196,7 +175,6 @@ const handleVerify = async () => {
 </script>
 
 <style scoped>
-/* Thêm class để khoảng cách chữ trong ô nhập mã rộng ra nhìn cho giống mã OTP */
 .tracking-widest {
   letter-spacing: 0.5em;
 }

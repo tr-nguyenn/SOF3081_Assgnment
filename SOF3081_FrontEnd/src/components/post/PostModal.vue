@@ -24,7 +24,7 @@
         <label class="form-label text-black">Ảnh bài viết:</label>
         <input ref="fileInputRef" type="file" class="form-control" accept="image/jpeg,image/png" @change="handleImageUpload" />
 
-        <img v-if="image" :src="image" class="img-thumbnail mt-2" style="max-height: 150px; object-fit: cover" alt="Preview" />
+        <img v-if="imageBase64" :src="imageBase64" class="img-thumbnail mt-2" style="max-height: 150px; object-fit: cover" alt="Preview" />
       </div>
     </div>
 
@@ -41,45 +41,26 @@
 import { ref } from "vue";
 import BaseModal from "@/components/common/BaseModal.vue";
 import type { IPost } from "@/types/Post";
+import { useImageUpload } from "@/composables/useImageUpload";
 
 const props = defineProps<{
   mode: "create" | "update";
 }>();
-
 const emit = defineEmits(["create-post", "update-post"]);
-
 const baseModalRef = ref<InstanceType<typeof BaseModal> | null>(null);
-const fileInputRef = ref<HTMLInputElement | null>(null); // Để reset thẻ input file
-
-// State quản lý form
-const postId = ref("");
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const postId = ref();
 const title = ref("");
 const content = ref("");
-const image = ref(""); // Lưu trữ chuỗi Base64 của ảnh
 const titleError = ref(false);
 const contentError = ref(false);
-
-// Xử lý khi người dùng chọn ảnh
-const handleImageUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      // Ép kiểu kết quả về string (Base64) và gán vào biến image
-      image.value = e.target?.result as string;
-    };
-    reader.readAsDataURL(file); // Đọc file dưới dạng Data URL
-  }
-};
+const { imageBase64, uploadError, handleImageUpload, resetImage, setImage } = useImageUpload();
 
 const setFormData = (post: IPost) => {
   postId.value = post.id;
   title.value = post.title;
   content.value = post.content;
-  image.value = post.image || ""; // Nạp ảnh cũ nếu có
-
+  setImage(post.image || "");
   titleError.value = false;
   contentError.value = false;
 };
@@ -88,11 +69,9 @@ const resetForm = () => {
   postId.value = "";
   title.value = "";
   content.value = "";
-  image.value = "";
   titleError.value = false;
   contentError.value = false;
-
-  // Reset lại ô chọn file để người dùng có thể chọn lại ảnh cũ nếu muốn
+  resetImage();
   if (fileInputRef.value) {
     fileInputRef.value.value = "";
   }
@@ -112,7 +91,7 @@ const handleSubmitForm = () => {
     emit("create-post", {
       title: title.value,
       content: content.value,
-      image: image.value, // Truyền thêm ảnh
+      image: imageBase64.value,
       creationDate: `${day}/${month}/${year}`,
     });
   } else if (props.mode === "update") {
@@ -120,7 +99,7 @@ const handleSubmitForm = () => {
       id: postId.value,
       title: title.value,
       content: content.value,
-      image: image.value, // Truyền thêm ảnh
+      image: imageBase64.value,
     });
   }
 };

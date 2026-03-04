@@ -88,11 +88,8 @@ const handleLogin = async () => {
       errorMessage.value = "Email hoặc mật khẩu không chính xác!";
       return;
     }
-    // Lưu user
     localStorage.setItem("user", JSON.stringify(user));
-    // Thông báo
     toast.success("Đăng nhập thành công!");
-    // Chuyển về trang chủ
     router.replace("/");
   } catch (error) {
     toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
