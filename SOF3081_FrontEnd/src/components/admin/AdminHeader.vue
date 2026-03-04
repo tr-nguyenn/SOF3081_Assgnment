@@ -8,19 +8,20 @@
     </div>
 
     <div class="d-flex align-items-center gap-3">
-      <button class="btn btn-primary rounded-pill px-4 fw-medium">{{ user }}</button>
-      <img src="https://i.pravatar.cc/150?img=11" alt="avatar" class="rounded-circle" width="40" height="40" />
+      <button class="btn btn-primary rounded-pill px-4 fw-medium">{{ user?.name }}</button>
+      <img :src="user?.avatar" alt="avatar" class="rounded-circle" width="40" height="40" />
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
+import type { IUser } from "@/types/User";
 import { ref } from "vue";
 
-const user = ref("");
+const user = ref<IUser>();
 const userStr = localStorage.getItem("user");
 if (userStr) {
   const userObj = JSON.parse(userStr);
-  user.value = userObj.name;
+  user.value = userObj;
 }
 </script>

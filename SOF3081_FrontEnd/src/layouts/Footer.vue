@@ -86,7 +86,6 @@
       </div>
     </div>
   </footer>
-
   <!-- Copyright -->
   <div class="text-bg-dark bg-primary py-4 small border-top">
     <div class="container">

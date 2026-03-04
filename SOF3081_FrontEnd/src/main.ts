@@ -31,6 +31,5 @@ const options = {
 // 4. Đăng ký các plugin
 app.use(router);
 app.use(Toast, options);
-
 // 5. Mount app
 app.mount("#app");

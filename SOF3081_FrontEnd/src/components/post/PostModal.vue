@@ -54,7 +54,7 @@ const title = ref("");
 const content = ref("");
 const titleError = ref(false);
 const contentError = ref(false);
-const { imageBase64, uploadError, handleImageUpload, resetImage, setImage } = useImageUpload();
+const { imageBase64, handleImageUpload, resetImage, setImage } = useImageUpload();
 
 const setFormData = (post: IPost) => {
   postId.value = post.id;

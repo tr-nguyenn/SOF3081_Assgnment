@@ -2,7 +2,7 @@
   <div class="sidebar d-flex flex-column p-3 bg-white shadow-sm" style="width: 260px; height: 100vh; position: sticky; top: 0">
     <a href="/" class="d-flex align-items-center mb-4 text-dark text-decoration-none">
       <i class="bi bi-rocket-takeoff-fill text-primary fs-3 me-2"></i>
-      <span class="fs-4 fw-bold">Blog Admin</span>
+      <span class="fs-4 fw-bold">Vue Blog</span>
     </a>
 
     <hr class="mt-0" />
@@ -11,7 +11,7 @@
       <li class="nav-item">
         <router-link to="/admin/dashboard" class="nav-link text-dark fw-medium d-flex align-items-center" exact-active-class="active bg-primary-subtle text-primary">
           <i class="bi bi-grid-1x2-fill me-3 fs-5"></i>
-          Dashboard
+          Tổng quan
         </router-link>
       </li>
       <li class="nav-item">
